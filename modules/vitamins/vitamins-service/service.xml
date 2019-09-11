@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="com.dnebinger.vitamins">
+	<namespace>NEB</namespace>
+
+	<!--
+		The PersistedVitamin is a persisted version of the Vitamin Component used in the Headless API.
+		We're using this crappy name here just so in the blog we can distinguish between the Headless
+		entity and the persisted one.
+	  -->
+	<entity local-service="true" name="PersistedVitamin" remote-service="true" uuid="true">
+		<column name="persistedVitaminId" primary="true" type="long" />
+		<column name="surrogateId" type="String" />
+		<column name="groupId" type="long" />
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<column name="groupName" type="String" />
+		<column name="articleId" type="String" />
+		<column name="description" type="String" />
+		<column name="name" type="String" />
+		<column name="type" type="int" />
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<finder name="SurrogateId" return-type="PersistedVitamin">
+			<finder-column name="surrogateId" />
+		</finder>
+		<finder name="Name" return-type="PersistedVitamin">
+			<finder-column name="name" />
+		</finder>
+	</entity>
+
+	<!--
+		So we will have arrays of attributes, chemical names, properties, risks and symptoms that are associated with a
+		vitamin. We'll keep those here so we don't have space issues.
+	  -->
+	<entity name="VitaminDetail" local-service="true" remote-service="true" uuid="true">
+		<column name="vitaminDetailId" primary="true" type="long" />
+
+		<column name="groupId" type="long" />
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<column name="persistedVitaminId" type="long" />
+
+		<column name="type" type="int" />
+		<column name="value" type="String" />
+
+		<order by="asc">
+			<order-column name="type" />
+			<order-column name="value" />
+		</order>
+
+		<finder name="PersistedVitaminId" return-type="Collection">
+			<finder-column name="persistedVitaminId" />
+		</finder>
+
+		<finder name="PersistedVitaminIdType" return-type="Collection">
+			<finder-column name="persistedVitaminId" />
+			<finder-column name="type" />
+		</finder>
+
+	</entity>
+
+</service-builder>

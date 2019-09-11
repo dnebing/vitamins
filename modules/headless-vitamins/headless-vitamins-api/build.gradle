@@ -1,0 +1,13 @@
+dependencies {
+	compileOnly group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: "2.9.9"
+	compileOnly group: "com.liferay", name: "com.liferay.petra.function"
+	compileOnly group: "com.liferay", name: "com.liferay.petra.string"
+	compileOnly group: "com.liferay", name: "com.liferay.portal.vulcan.api"
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel"
+	compileOnly group: "io.swagger.core.v3", name: "swagger-annotations", version: "2.0.5"
+	compileOnly group: "javax.servlet", name: "javax.servlet-api"
+	compileOnly group: "javax.validation", name: "validation-api", version: "2.0.1.Final"
+	compileOnly group: "javax.ws.rs", name: "javax.ws.rs-api"
+	compileOnly group: "org.osgi", name: "org.osgi.annotation.versioning"
+}
+

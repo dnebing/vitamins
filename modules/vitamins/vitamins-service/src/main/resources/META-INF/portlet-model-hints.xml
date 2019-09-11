@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.dnebinger.vitamins.model.PersistedVitamin">
+		<field name="uuid" type="String" />
+		<field name="persistedVitaminId" type="long" />
+		<field name="surrogateId" type="String" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="groupName" type="String">
+			<hint name="max-length">150</hint>
+			<sanitize content-type="text/plain" modes="ALL" />
+			<validator name="required" />
+		</field>
+		<field name="articleId" type="String" />
+		<field name="description" type="String">
+			<hint name="max-length">4000</hint>
+			<sanitize content-type="text/plain" modes="ALL" />
+		</field>
+		<field name="name" type="String">
+			<hint name="max-length">150</hint>
+			<sanitize content-type="text/plain" modes="ALL" />
+			<validator name="required" />
+		</field>
+		<field name="type" type="int" />
+	</model>
+	<model name="com.dnebinger.vitamins.model.VitaminDetail">
+		<field name="uuid" type="String" />
+		<field name="vitaminDetailId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="persistedVitaminId" type="long" />
+		<field name="type" type="int" />
+		<field name="value" type="String">
+			<hint name="max-length">2000</hint>
+			<sanitize content-type="text/plain" modes="ALL" />
+		</field>
+	</model>
+</model-hints>

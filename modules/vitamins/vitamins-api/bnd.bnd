@@ -1,0 +1,10 @@
+Bundle-Name: vitamins-api
+Bundle-SymbolicName: com.dnebinger.vitamins.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.dnebinger.vitamins.exception,\
+	com.dnebinger.vitamins.model,\
+	com.dnebinger.vitamins.service,\
+	com.dnebinger.vitamins.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../vitamins-service/service.xml

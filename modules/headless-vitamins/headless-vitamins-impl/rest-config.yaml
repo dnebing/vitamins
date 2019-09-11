@@ -1,0 +1,9 @@
+apiDir: "../headless-vitamins-api/src/main/java"
+apiPackagePath: "com.dnebinger.headless.vitamins"
+application:
+  baseURI: "/headless-vitamins"
+  className: "HeadlessVitaminsApplication"
+  name: "dnebinger.Headless.Vitamins"
+author: "Dave Nebinger"
+clientDir: "../headless-vitamins-client/src/main/java"
+testDir: "../headless-vitamins-test/src/testIntegration/java"
