@@ -1,0 +1,4 @@
+Bundle-Name: headless-vitamins-cli
+Bundle-SymbolicName: com.dnebinger.headless.vitamins.cli
+Bundle-Version: 1.0.0
+Export-Package: com.dnebinger.headless.vitamins.cli.api

@@ -185,16 +185,16 @@ public class PersistedVitaminUtil {
 	 * @param start the lower bound of the range of persisted vitamins
 	 * @param end the upper bound of the range of persisted vitamins (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching persisted vitamins
 	 */
 	public static List<PersistedVitamin> findByUuid(
 		String uuid, int start, int end,
 		OrderByComparator<PersistedVitamin> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findByUuid(
-			uuid, start, end, orderByComparator, retrieveFromCache);
+			uuid, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -324,13 +324,13 @@ public class PersistedVitaminUtil {
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching persisted vitamin, or <code>null</code> if a matching persisted vitamin could not be found
 	 */
 	public static PersistedVitamin fetchByUUID_G(
-		String uuid, long groupId, boolean retrieveFromCache) {
+		String uuid, long groupId, boolean useFinderCache) {
 
-		return getPersistence().fetchByUUID_G(uuid, groupId, retrieveFromCache);
+		return getPersistence().fetchByUUID_G(uuid, groupId, useFinderCache);
 	}
 
 	/**
@@ -424,16 +424,16 @@ public class PersistedVitaminUtil {
 	 * @param start the lower bound of the range of persisted vitamins
 	 * @param end the upper bound of the range of persisted vitamins (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching persisted vitamins
 	 */
 	public static List<PersistedVitamin> findByUuid_C(
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<PersistedVitamin> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findByUuid_C(
-			uuid, companyId, start, end, orderByComparator, retrieveFromCache);
+			uuid, companyId, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -575,14 +575,13 @@ public class PersistedVitaminUtil {
 	 * Returns the persisted vitamin where surrogateId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param surrogateId the surrogate ID
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching persisted vitamin, or <code>null</code> if a matching persisted vitamin could not be found
 	 */
 	public static PersistedVitamin fetchBySurrogateId(
-		String surrogateId, boolean retrieveFromCache) {
+		String surrogateId, boolean useFinderCache) {
 
-		return getPersistence().fetchBySurrogateId(
-			surrogateId, retrieveFromCache);
+		return getPersistence().fetchBySurrogateId(surrogateId, useFinderCache);
 	}
 
 	/**
@@ -636,13 +635,13 @@ public class PersistedVitaminUtil {
 	 * Returns the persisted vitamin where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param name the name
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching persisted vitamin, or <code>null</code> if a matching persisted vitamin could not be found
 	 */
 	public static PersistedVitamin fetchByName(
-		String name, boolean retrieveFromCache) {
+		String name, boolean useFinderCache) {
 
-		return getPersistence().fetchByName(name, retrieveFromCache);
+		return getPersistence().fetchByName(name, useFinderCache);
 	}
 
 	/**
@@ -793,16 +792,16 @@ public class PersistedVitaminUtil {
 	 * @param start the lower bound of the range of persisted vitamins
 	 * @param end the upper bound of the range of persisted vitamins (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of persisted vitamins
 	 */
 	public static List<PersistedVitamin> findAll(
 		int start, int end,
 		OrderByComparator<PersistedVitamin> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findAll(
-			start, end, orderByComparator, retrieveFromCache);
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**

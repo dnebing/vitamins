@@ -1,4 +1,4 @@
-Bundle-Name: vitamins-api
+Bundle-Name: Vitamins SB API
 Bundle-SymbolicName: com.dnebinger.vitamins.api
 Bundle-Version: 1.0.0
 Export-Package:\
@@ -8,3 +8,4 @@ Export-Package:\
 	com.dnebinger.vitamins.service.persistence
 -check: EXPORTS
 -includeresource: META-INF/service.xml=../vitamins-service/service.xml
+

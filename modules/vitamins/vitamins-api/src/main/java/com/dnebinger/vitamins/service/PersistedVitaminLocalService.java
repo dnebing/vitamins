@@ -110,7 +110,6 @@ public interface PersistedVitaminLocalService
 	 * @throws PortalException if a persisted vitamin with the primary key could not be found
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
 	public PersistedVitamin deletePersistedVitamin(long persistedVitaminId)
 		throws PortalException;
 
@@ -121,13 +120,19 @@ public interface PersistedVitaminLocalService
 	 * @return the persisted vitamin that was removed
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
 	public PersistedVitamin deletePersistedVitamin(
 		PersistedVitamin persistedVitamin);
 
 	@Indexable(type = IndexableType.DELETE)
+	public PersistedVitamin deleteVitamin(long persistedVitaminId)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.DELETE)
 	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
-	public void deletePersistedVitamin(String surrogateId);
+	public PersistedVitamin deleteVitamin(PersistedVitamin persistedVitamin);
+
+	@Indexable(type = IndexableType.DELETE)
+	public void deleteVitamin(String surrogateId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DynamicQuery dynamicQuery();

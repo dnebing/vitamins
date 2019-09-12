@@ -94,14 +94,14 @@ public interface VitaminDetailPersistence
 	 * @param start the lower bound of the range of vitamin details
 	 * @param end the upper bound of the range of vitamin details (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching vitamin details
 	 */
 	public java.util.List<VitaminDetail> findByUuid(
 		String uuid, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<VitaminDetail>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first vitamin detail in the ordered set where uuid = &#63;.
@@ -210,11 +210,11 @@ public interface VitaminDetailPersistence
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching vitamin detail, or <code>null</code> if a matching vitamin detail could not be found
 	 */
 	public VitaminDetail fetchByUUID_G(
-		String uuid, long groupId, boolean retrieveFromCache);
+		String uuid, long groupId, boolean useFinderCache);
 
 	/**
 	 * Removes the vitamin detail where uuid = &#63; and groupId = &#63; from the database.
@@ -292,14 +292,14 @@ public interface VitaminDetailPersistence
 	 * @param start the lower bound of the range of vitamin details
 	 * @param end the upper bound of the range of vitamin details (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching vitamin details
 	 */
 	public java.util.List<VitaminDetail> findByUuid_C(
 		String uuid, long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<VitaminDetail>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first vitamin detail in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -443,14 +443,14 @@ public interface VitaminDetailPersistence
 	 * @param start the lower bound of the range of vitamin details
 	 * @param end the upper bound of the range of vitamin details (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching vitamin details
 	 */
 	public java.util.List<VitaminDetail> findByPersistedVitaminId(
 		long persistedVitaminId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<VitaminDetail>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first vitamin detail in the ordered set where persistedVitaminId = &#63;.
@@ -591,14 +591,14 @@ public interface VitaminDetailPersistence
 	 * @param start the lower bound of the range of vitamin details
 	 * @param end the upper bound of the range of vitamin details (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching vitamin details
 	 */
 	public java.util.List<VitaminDetail> findByPersistedVitaminIdType(
 		long persistedVitaminId, int type, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<VitaminDetail>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first vitamin detail in the ordered set where persistedVitaminId = &#63; and type = &#63;.
@@ -789,14 +789,14 @@ public interface VitaminDetailPersistence
 	 * @param start the lower bound of the range of vitamin details
 	 * @param end the upper bound of the range of vitamin details (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of vitamin details
 	 */
 	public java.util.List<VitaminDetail> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<VitaminDetail>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the vitamin details from the database.

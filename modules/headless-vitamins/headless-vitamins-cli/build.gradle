@@ -1,0 +1,7 @@
+dependencies {
+	implementation 'org.beryx:text-io:3.3.0'
+	implementation 'org.beryx:text-io-web:3.3.0'
+	implementation project(":modules:headless-vitamins:headless-vitamins-client")
+	runtime group: 'org.slf4j', name: 'slf4j-jdk14', version: '1.7.28'
+
+}

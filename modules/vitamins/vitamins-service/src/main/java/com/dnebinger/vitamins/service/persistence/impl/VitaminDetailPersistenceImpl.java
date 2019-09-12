@@ -37,11 +37,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
 import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -168,14 +167,14 @@ public class VitaminDetailPersistenceImpl
 	 * @param start the lower bound of the range of vitamin details
 	 * @param end the upper bound of the range of vitamin details (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching vitamin details
 	 */
 	@Override
 	public List<VitaminDetail> findByUuid(
 		String uuid, int start, int end,
 		OrderByComparator<VitaminDetail> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -187,17 +186,20 @@ public class VitaminDetailPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindByUuid;
-			finderArgs = new Object[] {uuid};
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByUuid;
+				finderArgs = new Object[] {uuid};
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByUuid;
 			finderArgs = new Object[] {uuid, start, end, orderByComparator};
 		}
 
 		List<VitaminDetail> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<VitaminDetail>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -274,10 +276,14 @@ public class VitaminDetailPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -704,20 +710,24 @@ public class VitaminDetailPersistenceImpl
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching vitamin detail, or <code>null</code> if a matching vitamin detail could not be found
 	 */
 	@Override
 	public VitaminDetail fetchByUUID_G(
-		String uuid, long groupId, boolean retrieveFromCache) {
+		String uuid, long groupId, boolean useFinderCache) {
 
 		uuid = Objects.toString(uuid, "");
 
-		Object[] finderArgs = new Object[] {uuid, groupId};
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {uuid, groupId};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			result = finderCache.getResult(
 				_finderPathFetchByUUID_G, finderArgs, this);
 		}
@@ -770,8 +780,10 @@ public class VitaminDetailPersistenceImpl
 				List<VitaminDetail> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(
-						_finderPathFetchByUUID_G, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByUUID_G, finderArgs, list);
+					}
 				}
 				else {
 					VitaminDetail vitaminDetail = list.get(0);
@@ -782,7 +794,10 @@ public class VitaminDetailPersistenceImpl
 				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathFetchByUUID_G, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByUUID_G, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -965,14 +980,14 @@ public class VitaminDetailPersistenceImpl
 	 * @param start the lower bound of the range of vitamin details
 	 * @param end the upper bound of the range of vitamin details (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching vitamin details
 	 */
 	@Override
 	public List<VitaminDetail> findByUuid_C(
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<VitaminDetail> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -984,10 +999,13 @@ public class VitaminDetailPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindByUuid_C;
-			finderArgs = new Object[] {uuid, companyId};
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByUuid_C;
+				finderArgs = new Object[] {uuid, companyId};
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByUuid_C;
 			finderArgs = new Object[] {
 				uuid, companyId, start, end, orderByComparator
@@ -996,7 +1014,7 @@ public class VitaminDetailPersistenceImpl
 
 		List<VitaminDetail> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<VitaminDetail>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -1079,10 +1097,14 @@ public class VitaminDetailPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -1557,14 +1579,14 @@ public class VitaminDetailPersistenceImpl
 	 * @param start the lower bound of the range of vitamin details
 	 * @param end the upper bound of the range of vitamin details (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching vitamin details
 	 */
 	@Override
 	public List<VitaminDetail> findByPersistedVitaminId(
 		long persistedVitaminId, int start, int end,
 		OrderByComparator<VitaminDetail> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -1574,10 +1596,14 @@ public class VitaminDetailPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindByPersistedVitaminId;
-			finderArgs = new Object[] {persistedVitaminId};
+
+			if (useFinderCache) {
+				finderPath =
+					_finderPathWithoutPaginationFindByPersistedVitaminId;
+				finderArgs = new Object[] {persistedVitaminId};
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByPersistedVitaminId;
 			finderArgs = new Object[] {
 				persistedVitaminId, start, end, orderByComparator
@@ -1586,7 +1612,7 @@ public class VitaminDetailPersistenceImpl
 
 		List<VitaminDetail> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<VitaminDetail>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -1655,10 +1681,14 @@ public class VitaminDetailPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -2087,14 +2117,14 @@ public class VitaminDetailPersistenceImpl
 	 * @param start the lower bound of the range of vitamin details
 	 * @param end the upper bound of the range of vitamin details (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching vitamin details
 	 */
 	@Override
 	public List<VitaminDetail> findByPersistedVitaminIdType(
 		long persistedVitaminId, int type, int start, int end,
 		OrderByComparator<VitaminDetail> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -2104,11 +2134,14 @@ public class VitaminDetailPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath =
-				_finderPathWithoutPaginationFindByPersistedVitaminIdType;
-			finderArgs = new Object[] {persistedVitaminId, type};
+
+			if (useFinderCache) {
+				finderPath =
+					_finderPathWithoutPaginationFindByPersistedVitaminIdType;
+				finderArgs = new Object[] {persistedVitaminId, type};
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByPersistedVitaminIdType;
 			finderArgs = new Object[] {
 				persistedVitaminId, type, start, end, orderByComparator
@@ -2117,7 +2150,7 @@ public class VitaminDetailPersistenceImpl
 
 		List<VitaminDetail> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<VitaminDetail>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -2191,10 +2224,14 @@ public class VitaminDetailPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -2737,7 +2774,7 @@ public class VitaminDetailPersistenceImpl
 
 		vitaminDetail.setUuid(uuid);
 
-		vitaminDetail.setCompanyId(companyProvider.getCompanyId());
+		vitaminDetail.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return vitaminDetail;
 	}
@@ -3184,13 +3221,13 @@ public class VitaminDetailPersistenceImpl
 	 * @param start the lower bound of the range of vitamin details
 	 * @param end the upper bound of the range of vitamin details (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of vitamin details
 	 */
 	@Override
 	public List<VitaminDetail> findAll(
 		int start, int end, OrderByComparator<VitaminDetail> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -3200,17 +3237,20 @@ public class VitaminDetailPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindAll;
-			finderArgs = FINDER_ARGS_EMPTY;
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindAll;
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<VitaminDetail> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<VitaminDetail>)finderCache.getResult(
 				finderPath, finderArgs, this);
 		}
@@ -3260,10 +3300,14 @@ public class VitaminDetailPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -3484,7 +3528,7 @@ public class VitaminDetailPersistenceImpl
 
 	@Override
 	@Reference(
-		target = NEBPersistenceConstants.ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER,
+		target = NEBPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
 		unbind = "-"
 	)
 	public void setConfiguration(Configuration configuration) {
@@ -3515,9 +3559,6 @@ public class VitaminDetailPersistenceImpl
 	}
 
 	private boolean _columnBitmaskEnabled;
-
-	@Reference(service = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -3550,5 +3591,14 @@ public class VitaminDetailPersistenceImpl
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "type"});
+
+	static {
+		try {
+			Class.forName(NEBPersistenceConstants.class.getName());
+		}
+		catch (ClassNotFoundException cnfe) {
+			throw new ExceptionInInitializerError(cnfe);
+		}
+	}
 
 }

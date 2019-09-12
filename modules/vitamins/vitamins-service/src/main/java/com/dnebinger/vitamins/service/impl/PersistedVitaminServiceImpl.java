@@ -136,7 +136,7 @@ public class PersistedVitaminServiceImpl
 				getPermissionChecker(),
 				persistedVitaminLocalService.getPersistedVitamin(surrogateId), ActionKeys.DELETE);
 
-		persistedVitaminLocalService.deletePersistedVitamin(surrogateId);
+		persistedVitaminLocalService.deleteVitamin(surrogateId);
 	}
 
 	private static final Logger _log = LoggerFactory.getLogger(PersistedVitaminServiceImpl.class);

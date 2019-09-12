@@ -313,36 +313,30 @@ public class PersistedVitaminLocalServiceImpl
 
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
-	public void deletePersistedVitamin(final String surrogateId) {
+	public void deleteVitamin(final String surrogateId) {
 		PersistedVitamin vitamin = getPersistedVitamin(surrogateId);
 
 		if (vitamin != null) {
-			deletePersistedVitamin(vitamin);
+			deleteVitamin(vitamin);
 		}
 	}
 
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
-	public PersistedVitamin deletePersistedVitamin(long persistedVitaminId) throws PortalException {
+	public PersistedVitamin deleteVitamin(long persistedVitaminId) throws PortalException {
 		PersistedVitamin vitamin = fetchPersistedVitamin(persistedVitaminId);
 
 		if (vitamin != null) {
-			resourceLocalService.deleteResource(
-					vitamin.getCompanyId(), PersistedVitamin.class.getName(),
-					ResourceConstants.SCOPE_INDIVIDUAL, vitamin.getPersistedVitaminId());
+			return deleteVitamin(vitamin);
 		}
 
-		vitaminDetailLocalService.deleteAllVitaminDetails(persistedVitaminId);
-
-		return persistedVitaminLocalService.deletePersistedVitamin(persistedVitaminId);
+		return null;
 	}
 
 	@Indexable(type = IndexableType.DELETE)
-	@Override
 	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
-	public PersistedVitamin deletePersistedVitamin(PersistedVitamin persistedVitamin) {
+	@Override
+	public PersistedVitamin deleteVitamin(PersistedVitamin persistedVitamin) {
 		try {
 			resourceLocalService.deleteResource(
 					persistedVitamin.getCompanyId(), PersistedVitamin.class.getName(),
@@ -352,6 +346,8 @@ public class PersistedVitaminLocalServiceImpl
 		}
 
 		vitaminDetailLocalService.deleteAllVitaminDetails(persistedVitamin.getPersistedVitaminId());
+
+		// call the super action method to try the delete.
 		return persistedVitaminLocalService.deletePersistedVitamin(persistedVitamin);
 	}
 

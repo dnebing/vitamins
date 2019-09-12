@@ -6,6 +6,7 @@
     <model-resource>
         <model-name>com.dnebinger.vitamins</model-name>
         <portlet-ref>
+            <portlet-name>com_dnebinger_vitamins_web_portlet_VitaminsAdminPortlet</portlet-name>
         </portlet-ref>
         <root>true</root>
         <weight>1</weight>
@@ -28,6 +29,7 @@
     <model-resource>
         <model-name>com.dnebinger.vitamins.model.PersistedVitamin</model-name>
         <portlet-ref>
+            <portlet-name>com_dnebinger_vitamins_web_portlet_VitaminsAdminPortlet</portlet-name>
         </portlet-ref>
         <weight>2</weight>
         <permissions>
@@ -53,6 +55,7 @@
     <model-resource>
         <model-name>com.dnebinger.vitamins.model.VitaminDetail</model-name>
         <portlet-ref>
+            <portlet-name>com_dnebinger_vitamins_web_portlet_VitaminsAdminPortlet</portlet-name>
         </portlet-ref>
         <weight>2</weight>
         <permissions>

@@ -122,8 +122,23 @@ public class PersistedVitaminLocalServiceWrapper
 	}
 
 	@Override
-	public void deletePersistedVitamin(String surrogateId) {
-		_persistedVitaminLocalService.deletePersistedVitamin(surrogateId);
+	public com.dnebinger.vitamins.model.PersistedVitamin deleteVitamin(
+			long persistedVitaminId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _persistedVitaminLocalService.deleteVitamin(persistedVitaminId);
+	}
+
+	@Override
+	public com.dnebinger.vitamins.model.PersistedVitamin deleteVitamin(
+		com.dnebinger.vitamins.model.PersistedVitamin persistedVitamin) {
+
+		return _persistedVitaminLocalService.deleteVitamin(persistedVitamin);
+	}
+
+	@Override
+	public void deleteVitamin(String surrogateId) {
+		_persistedVitaminLocalService.deleteVitamin(surrogateId);
 	}
 
 	@Override

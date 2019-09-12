@@ -58,61 +58,98 @@ public class VitaminResourceImpl extends BaseVitaminResourceImpl implements Enti
 
 	@Override
 	public Page<Vitamin> getVitaminsPage(String search, Filter filter, Pagination pagination, Sort[] sorts) throws Exception {
-		return SearchUtil.search(
-				booleanQuery -> {
-					// does nothing, we just need the UnsafeConsumer<BooleanQuery, Exception> method
-				},
-				filter, PersistedVitamin.class, search, pagination,
-				queryConfig -> queryConfig.setSelectedFieldNames(
-						Field.ENTRY_CLASS_PK),
-				searchContext -> searchContext.setCompanyId(
-						contextCompany.getCompanyId()),
-				document -> _toVitamin(
-						_persistedVitaminService.getPersistedVitamin(
-								GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))),
-				sorts);
+		try {
+			return SearchUtil.search(
+					booleanQuery -> {
+						// does nothing, we just need the UnsafeConsumer<BooleanQuery, Exception> method
+					},
+					filter, PersistedVitamin.class, search, pagination,
+					queryConfig -> queryConfig.setSelectedFieldNames(
+							Field.ENTRY_CLASS_PK),
+					searchContext -> searchContext.setCompanyId(
+							contextCompany.getCompanyId()),
+					document -> _toVitamin(
+							_persistedVitaminService.getPersistedVitamin(
+									GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))),
+					sorts);
+		} catch (Exception e) {
+			_log.error("Error listing vitamins: " + e.getMessage(), e);
+
+			throw e;
+		}
 	}
 
 	@Override
 	public void deleteVitamin(@NotNull String vitaminId) throws Exception {
-
-		// super easy case, just pass through to the service layer.
-		_persistedVitaminService.deletePersistedVitamin(vitaminId);
+		try {
+			// super easy case, just pass through to the service layer.
+			_persistedVitaminService.deletePersistedVitamin(vitaminId);
+		} catch (Exception e) {
+			_log.error("Error deleting vitamin: " + e.getMessage(), e);
+			throw e;
+		}
 	}
 
 	@Override
 	public Vitamin getVitamin(@NotNull String vitaminId) throws Exception {
-		// fetch the entity class...
-		PersistedVitamin pv = _persistedVitaminService.getPersistedVitamin(vitaminId);
+		try {
+			// fetch the entity class...
+			PersistedVitamin pv = _persistedVitaminService.getPersistedVitamin(vitaminId);
 
-		return _toVitamin(pv);
+			return _toVitamin(pv);
+		} catch (Exception e) {
+			_log.error("Error getting vitamin [" + vitaminId + "]: " + e.getMessage(), e);
+			throw e;
+		}
 	}
 
 	@Override
 	public Vitamin postVitamin(Vitamin v) throws Exception {
-		PersistedVitamin pv = _persistedVitaminService.addPersistedVitamin(
-				v.getId(), v.getName(), v.getGroup(), v.getDescription(), _toTypeCode(v.getType()), v.getArticleId(), v.getChemicalNames(),
-				v.getProperties(), v.getAttributes(), v.getSymptoms(), v.getRisks(), _getServiceContext());
+		if (_log.isDebugEnabled()) {
+			_log.debug("Need to create a new vitamin: %s\n", v.toString());
+		}
 
-		return _toVitamin(pv);
+		try {
+			PersistedVitamin pv = _persistedVitaminService.addPersistedVitamin(
+					v.getId(), v.getName(), v.getGroup(), v.getDescription(), _toTypeCode(v.getType()), v.getArticleId(), v.getChemicalNames(),
+					v.getProperties(), v.getAttributes(), v.getSymptoms(), v.getRisks(), _getServiceContext());
+
+			return _toVitamin(pv);
+		} catch (Exception e) {
+			_log.error("Error creating vitamin: " + e.getMessage(), e);
+
+			throw e;
+		}
 	}
 
 	@Override
 	public Vitamin patchVitamin(@NotNull String vitaminId, Vitamin v) throws Exception {
-		PersistedVitamin pv = _persistedVitaminService.patchPersistedVitamin(vitaminId,
-				v.getId(), v.getName(), v.getGroup(), v.getDescription(), _toTypeCode(v.getType()), v.getArticleId(), v.getChemicalNames(),
-				v.getProperties(), v.getAttributes(), v.getSymptoms(), v.getRisks(), _getServiceContext());
+		try {
+			PersistedVitamin pv = _persistedVitaminService.patchPersistedVitamin(vitaminId,
+					v.getId(), v.getName(), v.getGroup(), v.getDescription(), _toTypeCode(v.getType()), v.getArticleId(), v.getChemicalNames(),
+					v.getProperties(), v.getAttributes(), v.getSymptoms(), v.getRisks(), _getServiceContext());
 
-		return _toVitamin(pv);
+			return _toVitamin(pv);
+		} catch (Exception e) {
+			_log.error("Error patching vitamin: " + e.getMessage(), e);
+
+			throw e;
+		}
 	}
 
 	@Override
 	public Vitamin putVitamin(@NotNull String vitaminId, Vitamin v) throws Exception {
-		PersistedVitamin pv = _persistedVitaminService.updatePersistedVitamin(vitaminId,
-				v.getId(), v.getName(), v.getGroup(), v.getDescription(), _toTypeCode(v.getType()), v.getArticleId(), v.getChemicalNames(),
-				v.getProperties(), v.getAttributes(), v.getSymptoms(), v.getRisks(), _getServiceContext());
+		try {
+			PersistedVitamin pv = _persistedVitaminService.updatePersistedVitamin(vitaminId,
+					v.getId(), v.getName(), v.getGroup(), v.getDescription(), _toTypeCode(v.getType()), v.getArticleId(), v.getChemicalNames(),
+					v.getProperties(), v.getAttributes(), v.getSymptoms(), v.getRisks(), _getServiceContext());
 
-		return _toVitamin(pv);
+			return _toVitamin(pv);
+		} catch (Exception e) {
+			_log.error("Error putting vitamin: " + e.getMessage(), e);
+
+			throw e;
+		}
 	}
 
 	protected ServiceContext _getServiceContext() {

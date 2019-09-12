@@ -118,8 +118,21 @@ public class PersistedVitaminLocalServiceUtil {
 		return getService().deletePersistedVitamin(persistedVitamin);
 	}
 
-	public static void deletePersistedVitamin(String surrogateId) {
-		getService().deletePersistedVitamin(surrogateId);
+	public static com.dnebinger.vitamins.model.PersistedVitamin deleteVitamin(
+			long persistedVitaminId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().deleteVitamin(persistedVitaminId);
+	}
+
+	public static com.dnebinger.vitamins.model.PersistedVitamin deleteVitamin(
+		com.dnebinger.vitamins.model.PersistedVitamin persistedVitamin) {
+
+		return getService().deleteVitamin(persistedVitamin);
+	}
+
+	public static void deleteVitamin(String surrogateId) {
+		getService().deleteVitamin(surrogateId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
