@@ -37,4 +37,6 @@ dependencies {
 	compileOnly project(":modules:headless-vitamins:headless-vitamins-api")
 	compileOnly project(":modules:vitamins:vitamins-api")
 	compileOnly group: "org.slf4j", name: "slf4j-api"
+
+	restBuilder group: "com.liferay", name: "com.liferay.portal.tools.rest.builder", version: "1.0.23"
 }
