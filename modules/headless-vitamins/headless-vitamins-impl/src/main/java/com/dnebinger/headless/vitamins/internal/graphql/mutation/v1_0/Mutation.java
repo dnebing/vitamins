@@ -5,14 +5,18 @@ import com.dnebinger.headless.vitamins.resource.v1_0.VitaminResource;
 
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
-
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLInvokeDetached;
-import graphql.annotations.annotationTypes.GraphQLName;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 
 import javax.annotation.Generated;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import javax.ws.rs.core.UriInfo;
 
 import org.osgi.service.component.ComponentServiceObjects;
 
@@ -32,8 +36,7 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public Vitamin postVitamin(@GraphQLName("vitamin") Vitamin vitamin)
+	public Vitamin createVitamin(@GraphQLName("vitamin") Vitamin vitamin)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -42,17 +45,19 @@ public class Mutation {
 			vitaminResource -> vitaminResource.postVitamin(vitamin));
 	}
 
-	@GraphQLInvokeDetached
-	public void deleteVitamin(@GraphQLName("vitaminId") String vitaminId)
+	@GraphQLField
+	public boolean deleteVitamin(@GraphQLName("vitaminId") String vitaminId)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
 			_vitaminResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			vitaminResource -> vitaminResource.deleteVitamin(vitaminId));
+
+		return true;
 	}
 
-	@GraphQLInvokeDetached
+	@GraphQLField
 	public Vitamin patchVitamin(
 			@GraphQLName("vitaminId") String vitaminId,
 			@GraphQLName("vitamin") Vitamin vitamin)
@@ -65,8 +70,8 @@ public class Mutation {
 				vitaminId, vitamin));
 	}
 
-	@GraphQLInvokeDetached
-	public Vitamin putVitamin(
+	@GraphQLField
+	public Vitamin updateVitamin(
 			@GraphQLName("vitaminId") String vitaminId,
 			@GraphQLName("vitamin") Vitamin vitamin)
 		throws Exception {
@@ -118,12 +123,22 @@ public class Mutation {
 	private void _populateResourceContext(VitaminResource vitaminResource)
 		throws Exception {
 
-		vitaminResource.setContextCompany(
-			CompanyLocalServiceUtil.getCompany(
-				CompanyThreadLocal.getCompanyId()));
+		vitaminResource.setContextAcceptLanguage(_acceptLanguage);
+		vitaminResource.setContextCompany(_company);
+		vitaminResource.setContextHttpServletRequest(_httpServletRequest);
+		vitaminResource.setContextHttpServletResponse(_httpServletResponse);
+		vitaminResource.setContextUriInfo(_uriInfo);
+		vitaminResource.setContextUser(_user);
 	}
 
 	private static ComponentServiceObjects<VitaminResource>
 		_vitaminResourceComponentServiceObjects;
+
+	private AcceptLanguage _acceptLanguage;
+	private Company _company;
+	private HttpServletRequest _httpServletRequest;
+	private HttpServletResponse _httpServletResponse;
+	private UriInfo _uriInfo;
+	private User _user;
 
 }

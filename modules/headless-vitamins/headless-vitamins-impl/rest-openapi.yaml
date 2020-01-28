@@ -87,9 +87,12 @@ components:
       type: object
 openapi: 3.0.1
 info:
+  description: "API for accessing Vitamin details."
+  license:
+        name: "Apache 2.0"
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
   title: "Headless Vitamins"
   version: v1.0
-  description: "API for accessing Vitamin details."
 paths:
   "/vitamins":
     get:

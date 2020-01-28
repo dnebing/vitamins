@@ -5,20 +5,24 @@ import com.dnebinger.headless.vitamins.resource.v1_0.VitaminResource;
 
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLInvokeDetached;
-import graphql.annotations.annotationTypes.GraphQLName;
-
-import java.util.Collection;
+import java.util.function.BiFunction;
 
 import javax.annotation.Generated;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import javax.ws.rs.core.UriInfo;
 
 import org.osgi.service.component.ComponentServiceObjects;
 
@@ -37,35 +41,68 @@ public class Query {
 			vitaminResourceComponentServiceObjects;
 	}
 
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {vitamins(filter: ___, page: ___, pageSize: ___, search: ___, sorts: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 */
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public Collection<Vitamin> getVitaminsPage(
+	public VitaminPage vitamins(
 			@GraphQLName("search") String search,
-			@GraphQLName("filter") Filter filter,
+			@GraphQLName("filter") String filterString,
 			@GraphQLName("pageSize") int pageSize,
-			@GraphQLName("page") int page, @GraphQLName("sorts") Sort[] sorts)
+			@GraphQLName("page") int page,
+			@GraphQLName("sort") String sortsString)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_vitaminResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			vitaminResource -> {
-				Page paginationPage = vitaminResource.getVitaminsPage(
-					search, filter, Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			vitaminResource -> new VitaminPage(
+				vitaminResource.getVitaminsPage(
+					search,
+					_filterBiFunction.apply(vitaminResource, filterString),
+					Pagination.of(page, pageSize),
+					_sortsBiFunction.apply(vitaminResource, sortsString))));
 	}
 
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {vitamin(vitaminId: ___){name, id, chemicalNames, properties, group, description, articleId, type, attributes, risks, symptoms, creator}}"}' -u 'test@liferay.com:test'
+	 */
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public Vitamin getVitamin(@GraphQLName("vitaminId") String vitaminId)
+	public Vitamin vitamin(@GraphQLName("vitaminId") String vitaminId)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_vitaminResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			vitaminResource -> vitaminResource.getVitamin(vitaminId));
+	}
+
+	@GraphQLName("VitaminPage")
+	public class VitaminPage {
+
+		public VitaminPage(Page vitaminPage) {
+			items = vitaminPage.getItems();
+			page = vitaminPage.getPage();
+			pageSize = vitaminPage.getPageSize();
+			totalCount = vitaminPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<Vitamin> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
 	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R
@@ -90,12 +127,24 @@ public class Query {
 	private void _populateResourceContext(VitaminResource vitaminResource)
 		throws Exception {
 
-		vitaminResource.setContextCompany(
-			CompanyLocalServiceUtil.getCompany(
-				CompanyThreadLocal.getCompanyId()));
+		vitaminResource.setContextAcceptLanguage(_acceptLanguage);
+		vitaminResource.setContextCompany(_company);
+		vitaminResource.setContextHttpServletRequest(_httpServletRequest);
+		vitaminResource.setContextHttpServletResponse(_httpServletResponse);
+		vitaminResource.setContextUriInfo(_uriInfo);
+		vitaminResource.setContextUser(_user);
 	}
 
 	private static ComponentServiceObjects<VitaminResource>
 		_vitaminResourceComponentServiceObjects;
+
+	private AcceptLanguage _acceptLanguage;
+	private BiFunction<Object, String, Filter> _filterBiFunction;
+	private BiFunction<Object, String, Sort[]> _sortsBiFunction;
+	private Company _company;
+	private HttpServletRequest _httpServletRequest;
+	private HttpServletResponse _httpServletResponse;
+	private UriInfo _uriInfo;
+	private User _user;
 
 }
