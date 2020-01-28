@@ -13,10 +13,8 @@ import org.beryx.textio.web.RunnerData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Month;
 import java.util.Collection;
 import java.util.function.BiConsumer;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 
 public class VitaminsCli implements BiConsumer<TextIO, RunnerData> {
@@ -229,7 +227,7 @@ public class VitaminsCli implements BiConsumer<TextIO, RunnerData> {
         Vitamin vitamin = readVitamin(textIO, null);
 
         try {
-            Vitamin v = VitaminResource.postVitamin(vitamin);
+            Vitamin v = _vitaminResource.postVitamin(vitamin);
 
             terminal.printf("Added vitamin %s\n", v);
         } catch (Exception e) {
@@ -241,12 +239,12 @@ public class VitaminsCli implements BiConsumer<TextIO, RunnerData> {
     public void put(TextIO textIO, TextTerminal<?> terminal, final String id) {
         try {
             // fetch first...
-            Vitamin v = VitaminResource.getVitamin(id);
+            Vitamin v = _vitaminResource.getVitamin(id);
 
             // now that we have the current vitamin, let's ask for the update.
             Vitamin vitamin = readVitamin(textIO, v);
 
-            v = VitaminResource.putVitamin(id, vitamin);
+            v = _vitaminResource.putVitamin(id, vitamin);
 
             terminal.printf("Overwrote vitamin %s\n", v);
         } catch (Exception e) {
@@ -257,12 +255,12 @@ public class VitaminsCli implements BiConsumer<TextIO, RunnerData> {
     public void patch(TextIO textIO, TextTerminal<?> terminal, final String id) {
         try {
             // fetch first...
-            Vitamin v = VitaminResource.getVitamin(id);
+            Vitamin v = _vitaminResource.getVitamin(id);
 
             // now that we have the current vitamin, let's ask for the update.
             Vitamin vitamin = readVitamin(textIO, v);
 
-            v = VitaminResource.putVitamin(id, vitamin);
+            v = _vitaminResource.putVitamin(id, vitamin);
 
             terminal.printf("Updated vitamin %s\n", v);
         } catch (Exception e) {
@@ -273,12 +271,12 @@ public class VitaminsCli implements BiConsumer<TextIO, RunnerData> {
     public void delete(TextIO textIO, TextTerminal<?> terminal, final String id) {
         try {
             // fetch first...
-            Vitamin v = VitaminResource.getVitamin(id);
+            Vitamin v = _vitaminResource.getVitamin(id);
 
             boolean del = textIO.newBooleanInputReader().read("Do you really want to delete " + v);
 
             if (del) {
-                VitaminResource.deleteVitamin(id);
+                _vitaminResource.deleteVitamin(id);
                 terminal.printf("Deleted vitamin %s\n", v);
             }
         } catch (Exception e) {
@@ -322,7 +320,7 @@ public class VitaminsCli implements BiConsumer<TextIO, RunnerData> {
         Pagination pagination = Pagination.of(0,20);
 
         try {
-            Page<Vitamin> vitaminPage = VitaminResource.getVitaminsPage(null,null,pagination,null);
+            Page<Vitamin> vitaminPage = _vitaminResource.getVitaminsPage(null,null,pagination,null);
             Collection<Vitamin> vitamins = vitaminPage.getItems();
 
             if ((vitamins != null) && (! vitamins.isEmpty())) {
@@ -342,7 +340,7 @@ public class VitaminsCli implements BiConsumer<TextIO, RunnerData> {
         terminal.printf("\nGetting %s\n\n", id);
 
         try {
-            Vitamin vitamin = VitaminResource.getVitamin(id);
+            Vitamin vitamin = _vitaminResource.getVitamin(id);
 
             terminal.printf("Vitamin: %s\n", vitamin);
         } catch (Exception e) {
@@ -372,5 +370,6 @@ public class VitaminsCli implements BiConsumer<TextIO, RunnerData> {
         }
     }
 
+    private static VitaminResource _vitaminResource = VitaminResource.builder().build();
     private static final Logger _log = LoggerFactory.getLogger(VitaminsCli.class);
 }
